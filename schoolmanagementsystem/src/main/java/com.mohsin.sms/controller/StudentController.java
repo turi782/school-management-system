@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import com.mohsin.sms.payload.ApiResponse;
 
-import java.util.List;git
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")

@@ -1,4 +1,4 @@
-package com.Mohsin.sms;
+package com.mohsin.sms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

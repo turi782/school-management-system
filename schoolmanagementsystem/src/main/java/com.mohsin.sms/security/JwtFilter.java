@@ -8,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.List;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -37,18 +37,23 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
 
             try {
-                // 🔹 Step 3: Extract username from token
-                String username = jwtUtil.extractUsername(token);
+                String username = jwtUtil.extractRole(token);
 
-                // 🔹 Step 4: Create authentication object
+// Extract role from token
+                String role = jwtUtil.extractRole(token);
+
+// Convert role into Spring Security authority
+                List<SimpleGrantedAuthority> authorities =
+                        List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+// Create authentication object
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 username,
                                 null,
-                                new ArrayList<>()
+                                authorities
                         );
-
-                // 🔹 Step 5: Set authentication in context
+// Set authenticated user
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
             } catch (Exception e) {

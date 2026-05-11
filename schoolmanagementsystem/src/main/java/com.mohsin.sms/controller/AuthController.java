@@ -39,7 +39,7 @@ public class AuthController {
             throw new RuntimeException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(dbUser);
 
         Map<String, String> response = new HashMap<>();
         response.put("token", token);

@@ -11,7 +11,6 @@ public class CourseMapper {
         dto.setId(course.getId());
         dto.setTitle(course.getTitle());
         dto.setDescription(course.getDescription());
-        dto.setInstructorName(course.getInstructorName());
         return dto;
     }
 
@@ -20,7 +19,6 @@ public class CourseMapper {
         course.setId(dto.getId());
         course.setTitle(dto.getTitle());
         course.setDescription(dto.getDescription());
-        course.setInstructorName(dto.getInstructorName());
         return course;
     }
 }

@@ -1,6 +1,7 @@
 package com.mohsin.sms.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 @Entity
@@ -15,5 +16,9 @@ public class Course {
 
     private String title;
     private String description;
-    private String instructorName;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 }

@@ -2,8 +2,10 @@ package com.mohsin.sms.service;
 
 import com.mohsin.sms.dto.CourseDTO;
 import com.mohsin.sms.entity.Course;
+import com.mohsin.sms.entity.Teacher;
 import com.mohsin.sms.mapper.CourseMapper;
 import com.mohsin.sms.repository.CourseRepository;
+import com.mohsin.sms.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 import com.mohsin.sms.exception.ResourceNotFoundException;
 
@@ -14,17 +16,40 @@ import java.util.stream.Collectors;
 @Service
 public class CourseService {
 
-
+    private final TeacherRepository teacherRepo;
     private final CourseRepository repo;
 
-    public CourseService(CourseRepository repo) {
+    public CourseService(CourseRepository repo,TeacherRepository teacherRepo) {
         this.repo = repo;
+        this.teacherRepo = teacherRepo;
     }
 
     // CREATE
     public CourseDTO createCourse(CourseDTO dto) {
-        Course course = CourseMapper.toEntity(dto);
-        return CourseMapper.toDTO(repo.save(course));
+
+        Teacher teacher = teacherRepo.findById(dto.getTeacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+
+        Course course = new Course();
+
+        course.setTitle(dto.getTitle());
+        course.setDescription(dto.getDescription());
+
+        // assign teacher
+        course.setTeacher(teacher);
+
+        Course saved = repo.save(course);
+
+        CourseDTO response = new CourseDTO();
+
+        response.setId(saved.getId());
+        response.setTitle(saved.getTitle());
+        response.setDescription(saved.getDescription());
+
+        response.setTeacherId(teacher.getId());
+        response.setTeacherName(teacher.getName());
+
+        return response;
     }
 
     // GET ALL
@@ -49,8 +74,6 @@ public class CourseService {
 
         course.setTitle(dto.getTitle());
         course.setDescription(dto.getDescription());
-        course.setInstructorName(dto.getInstructorName());
-
         return CourseMapper.toDTO(repo.save(course));
     }
 

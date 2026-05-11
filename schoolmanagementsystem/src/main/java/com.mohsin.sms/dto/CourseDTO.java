@@ -1,6 +1,5 @@
 package com.mohsin.sms.dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
 @Data

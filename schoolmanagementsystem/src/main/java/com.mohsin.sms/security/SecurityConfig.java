@@ -40,6 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/attendance/**")
                         .hasAnyRole("ADMIN", "TEACHER")
 
+                        .requestMatchers("/api/results/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
                         .anyRequest().authenticated()
 
                 )
